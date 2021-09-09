@@ -6,7 +6,5 @@ There are two 2d spheres one in front of the other. They have the same (x,y) coo
 
 ## Sphere3D
 
-TODO: Replace this text with results
-
-* images, gifs, videos
-* brief description of what each image/gif/video shows
+![] (http://g.recordit.co/ltJARRxSn6.gif)
+The sphere moves in a random direction when the Space-bar is pressed, and resets to the center when R is pressed. 
