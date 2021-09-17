@@ -9,7 +9,7 @@ class Unique : public atkui::Framework {
 
    virtual void setup() {
       thetaP = 0.0;
-      thetaRate = 1.5;
+      thetaRate = 1.8;
       thetaBody = 0.0;
       thetaBodyRate = 1.0;
    }
@@ -37,12 +37,12 @@ class Unique : public atkui::Framework {
 
       // draw the pupils
       thetaP += thetaRate * dt();
-      float px1 = 20.0f * sin(elapsedTime()) + 0.4 * width();
+      float px1 = 20.0f * sin(thetaP) + 0.4 * width();
       float py1 = 60.0f * sin(thetaBody) + 30;
       setColor(vec3(0, 0, 0));
       drawSphere(vec3(px1, py1, 200), 50);
 
-      float px2 = 20.0f * sin(elapsedTime()) + 0.6 * width();
+      float px2 = 20.0f * sin(thetaP) + 0.6 * width();
       float py2 = 60.0f * sin(thetaBody) + 30;
       setColor(vec3(0, 0, 0));
       drawSphere(vec3(px2, py2, 200), 50);
