@@ -1,7 +1,9 @@
 # Readme
 
-TODO: Replace this text with
+1: Eyes
+Draw eyes with oscillating pupils. 
+![](http://g.recordit.co/xNOqBwyL0x.gif)
 
-* images, gifs, videos
-* brief description of what each image/gif/video shows
-
+3: Particles 
+Randomly generate 150 particles that move in a linear motion in the same direction. 
+![](http://g.recordit.co/vv6DRxQVfx.gif)
