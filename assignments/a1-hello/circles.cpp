@@ -16,18 +16,20 @@ public:
    virtual void scene() {
       for(int i = 0; i < 10; i++) {
          theta += thetaRate * dt();
-         if(i % 2 > 0) {
-            theta *= -1;
+         
+         // change direction for alternating circles
+         int direction = 1;
+         if(i % 2 == 1) {
+            direction = -1;
          }
 
          setColor(pallet[i]);
          float outerRad = i * r;
-         
+
          for(int j = 0; j < 36; j++){
-            theta += thetaRate * dt();
-            float innerRadius = 12.0;
-            px = outerRad * cos(theta + j*(10*3.14/180)) + 0.5 * width();
-            py = outerRad * sin(theta + j*(10*3.14/180)) + 0.5 * height();
+            float innerRadius = 13.0;
+            px = outerRad * cos(direction * theta + j*(10*M_PI/180)) + 0.5 * width();
+            py = outerRad * sin(direction * theta + j*(10*M_PI/180)) + 0.5 * height();
             drawSphere(vec3(px, py, 0), innerRadius);
          }
       }
