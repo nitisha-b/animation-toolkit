@@ -18,7 +18,7 @@ class Look : public atkui::Framework {
 
   virtual void scene() {
     mousePos = vec3(mousePosition().x, mousePosition().y, 0);
-    // mouseMotion(mousePosition().x, mousePosition().y);
+    mouseMotion(mousePosition().x, mousePosition().y, mousePosition().x - _mouseX, mousePosition().y - _mouseY);
     mouseMove(mousePosition().x, mousePosition().y);
     vec3 target = vec3(_mouseX, _mouseY, 0);
     setColor(vec3(1,0,0));
@@ -39,18 +39,18 @@ class Look : public atkui::Framework {
     drawSphere(vec3(x2,y2,0), r2);
 
     // left pupil
-    float r = 25;
-    vec3 diffL =  mousePos - centerL;
-    thetaLeft = atan2(diffL.x, diffL.y);
+    float r = 30;
+    vec3 diffL = mousePos - centerL;
+    thetaLeft = atan2(diffL.y, diffL.x);
     float px1 = r * cos(thetaLeft) + 0.3 * width();
-    float py1 = r * sin(thetaLeft) + 0.5 * height();
+    float py1 = r * sin(-thetaLeft) + 0.5 * height();
     setColor(vec3(0, 0, 0));
     drawSphere(vec3(px1, py1, 80), 35);
     
     // right pupil 
     vec3 diffR = mousePos - centerR;
-    thetaRight = atan2(diffR.x, diffR.y);
-    float px2 = r * cos(-thetaRight) + 0.7 * width();
+    thetaRight = atan2(diffR.y, diffR.x);
+    float px2 = r * cos(thetaRight) + 0.7 * width();
     float py2 = r * sin(-thetaRight) + 0.5 * height();
     setColor(vec3(0, 0, 0));
     drawSphere(vec3(px2, py2, 80), 35);
