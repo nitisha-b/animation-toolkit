@@ -6,7 +6,7 @@ Draw eyes with oscillating pupils. <br>
 
 # 2: Look
 Eyes that follow the mouse cursor (the red dot). <br>
-![](http://g.recordit.co/uArsVkLBXT.gif) 
+![](http://g.recordit.co/shmpEbOlcO.gif) 
 
 # 3: Particles 
 Randomly generate 150 particles that move in a linear motion in the same direction. <br>
