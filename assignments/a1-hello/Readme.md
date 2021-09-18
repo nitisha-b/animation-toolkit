@@ -5,7 +5,7 @@ Draw eyes with oscillating pupils. <br>
 ![](http://g.recordit.co/xNOqBwyL0x.gif)
 
 # 2: Look
-Eyes that follow the mouse cursor (the red dot). 
+Eyes that follow the mouse cursor (the red dot). <br>
 ![](http://g.recordit.co/uArsVkLBXT.gif) 
 
 # 3: Particles 
