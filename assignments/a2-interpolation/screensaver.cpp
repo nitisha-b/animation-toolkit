@@ -35,16 +35,16 @@ public:
   void scene()
   {
     // draw initial and final curves
-    for (float i = 0.0; i < 1.0; i += 0.1)
+    for (float i = 0.0; i < 1.0; i += 0.002)
     {
-      setColor(randColor1);
-      drawCurve(initPos[0], initPos[1], initPos[2], initPos[3], i);
+      // setColor(randColor1);
+      drawCurve(initPos[0], initPos[1], initPos[2], initPos[3], i, randColor1);
     }
 
-    for (float i = 0.0; i < 1.0; i += 0.1)
+    for (float i = 0.0; i < 1.0; i += 0.002)
     {
-      setColor(randColor2);
-      drawCurve(finalPos[0], finalPos[1], finalPos[2], finalPos[3], i);
+      // setColor(randColor2);
+      drawCurve(finalPos[0], finalPos[1], finalPos[2], finalPos[3], i, randColor2);
     }
 
     if (t > 1.0)
@@ -57,19 +57,19 @@ public:
       initPos[3] = currentPos[3];
 
       // set final to new curve
-      finalPos.push_back(generateRandomVector());
-      finalPos.push_back(generateRandomVector());
-      finalPos.push_back(generateRandomVector());
-      finalPos.push_back(generateRandomVector());
+      finalPos[0] = generateRandomVector();
+      finalPos[1] = generateRandomVector();
+      finalPos[2] = generateRandomVector();
+      finalPos[3] = generateRandomVector();
 
-      randColor1 = agl::randomUnitVector()/2.0f;
-      randColor2 = agl::randomUnitVector()/2.0f;
-      randColor3 = agl::randomUnitVector()/2.0f;
+      randColor1 = agl::randomUnitVector();
+      randColor2 = agl::randomUnitVector();
+      randColor3 = agl::randomUnitVector();
     }
 
     else
     {
-      t += 0.05;
+      t += 0.02;
     }
 
     // interpolate
@@ -78,42 +78,33 @@ public:
     currentPos[2] = interpolate(initPos[2], finalPos[2], t);
     currentPos[3] = interpolate(initPos[3], finalPos[3], t);
 
-    for (float i = 0.0; i < 1.0; i += 0.1)
+    for (float i = 0.0; i < 1.0; i += 0.002)
     {
-      setColor(randColor3);
-      drawCurve(currentPos[0], currentPos[1], currentPos[2], currentPos[3], i);
+      // setColor(randColor3);
+      drawCurve(currentPos[0], currentPos[1], currentPos[2], currentPos[3], i, randColor3);
     }
   }
 
-  virtual void drawCurve(vec3 B0, vec3 B1, vec3 B2, vec3 B3, float t)
+  virtual void drawCurve(vec3 B0, vec3 B1, vec3 B2, vec3 B3, float t, vec3 color)
   {
     float term1 = (std::pow((1 - t), 3));
     float term2 = (3 * t * std::pow((1 - t), 2));
     float term3 = (3 * std::pow(t, 2) * (1 - t));
     float term4 = (std::pow(t, 3));
     curve = term1 * B0 + term2 * B1 + term3 * B2 + term4 * B3;
-    drawSphere(curve, 4);
+    setColor(color);
+    drawSphere(curve, 3);
   }
-
-  // virtual vector<vec3> generateRandomControlPoints()
-  // {
-  //   vector<vec3> temp = {
-  //       vec3(agl::random(0, width()), agl::random(0, height()), 0),
-  //       vec3(agl::random(0, width()), agl::random(0, height()), 0),
-  //       vec3(agl::random(0, width()), agl::random(0, height()), 0),
-  //       vec3(agl::random(0, width()), agl::random(0, height()), 0),
-  //   };
-  //   return temp;
-  // }
 
   virtual vec3 generateRandomVector()
   {
-    return vec3(agl::random(0, width()), agl::random(0, height()), 0);
+    // Using agl::random() was causing the program to be very slow
+    return vec3((float)(rand() % (int)width()), (float)(rand() % (int)height()), 0);
   }
 
   virtual vec3 interpolate(vec3 f, vec3 l, float t)
   {
-    return f * (1.0f - t) + l * t;
+    return f * (1 - t) + l * t;
   }
 
 private:
