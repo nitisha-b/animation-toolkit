@@ -69,7 +69,7 @@ public:
 
     else
     {
-      t += 0.02;
+      t += 0.024;
     }
 
     // interpolate
