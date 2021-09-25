@@ -37,13 +37,11 @@ public:
     // draw initial and final curves
     for (float i = 0.0; i < 1.0; i += 0.002)
     {
-      // setColor(randColor1);
       drawCurve(initPos[0], initPos[1], initPos[2], initPos[3], i, randColor1);
     }
 
     for (float i = 0.0; i < 1.0; i += 0.002)
     {
-      // setColor(randColor2);
       drawCurve(finalPos[0], finalPos[1], finalPos[2], finalPos[3], i, randColor2);
     }
 
@@ -62,9 +60,9 @@ public:
       finalPos[2] = generateRandomVector();
       finalPos[3] = generateRandomVector();
 
-      randColor1 = agl::randomUnitVector();
-      randColor2 = agl::randomUnitVector();
-      randColor3 = agl::randomUnitVector();
+      randColor1 = agl::randomUnitVector()/2.5f;
+      randColor2 = agl::randomUnitVector()/2.5f;
+      // randColor3 = agl::randomUnitVector();
     }
 
     else
@@ -77,10 +75,10 @@ public:
     currentPos[1] = interpolate(initPos[1], finalPos[1], t);
     currentPos[2] = interpolate(initPos[2], finalPos[2], t);
     currentPos[3] = interpolate(initPos[3], finalPos[3], t);
+    randColor3 = interpolate(randColor1, randColor2, t);
 
     for (float i = 0.0; i < 1.0; i += 0.002)
     {
-      // setColor(randColor3);
       drawCurve(currentPos[0], currentPos[1], currentPos[2], currentPos[3], i, randColor3);
     }
   }
