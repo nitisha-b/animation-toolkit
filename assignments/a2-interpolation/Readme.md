@@ -18,4 +18,4 @@ Interpolating curves <br>
 
 ## Screensaver pt.2 
 Screensaver with trailing effect.<br>
-![](http://g.recordit.co/ZR3lsJgWts.gif)
+![](http://g.recordit.co/AM67IBfpST.gif)
