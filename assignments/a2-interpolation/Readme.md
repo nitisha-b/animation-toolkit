@@ -2,7 +2,7 @@
 
 ## Gradient
 Equally sized cubes across the screen with interpolating colors. <br>
-![](cube.png)
+<img src="cube.png" width="400" />
 
 ## Curves
 Draw curves using Bernstein when "1" key is pressed, and using interpolation when "2" key is pressed. <br>
