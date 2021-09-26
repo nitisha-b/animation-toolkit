@@ -16,17 +16,15 @@ public:
     init.b1 = (generateRandomVector());
     init.b2 = (generateRandomVector());
     init.b3 = (generateRandomVector());
-    randColor1 = agl::randomUnitVector()/2.5f;
+    // randColor1 = agl::randomUnitVector()/2.5f;
+    init.color = agl::randomUnitVector()/2.5f;
 
     // get random final control points
     fin.b0 = (generateRandomVector());
     fin.b1 = (generateRandomVector());
     fin.b2 = (generateRandomVector());
     fin.b3 = (generateRandomVector());
-
-    randColor1 = agl::randomUnitVector();
-    randColor2 = agl::randomUnitVector();
-    randColor3 = agl::randomUnitVector();
+    fin.color = agl::randomUnitVector()/2.5f;
 
     curves = list<Curve>(max);
 
@@ -39,7 +37,7 @@ public:
     // draw initial and final curves
     for (float i = 0.0; i < 1.0; i += 0.002)
     {
-      drawCurve(init.b0, init.b1, init.b2, init.b3, i, randColor1);
+      drawCurve(init.b0, init.b1, init.b2, init.b3, i, init.color);
     }
 
     Curve current;
@@ -47,17 +45,17 @@ public:
     current.b1 = interpolate(init.b1, fin.b1, t);
     current.b2 = interpolate(init.b2, fin.b2, t);
     current.b3 = interpolate(init.b3, fin.b3, t);
-    // randColor3 = interpolate(randColor1, randColor2, t);
+    current.color = interpolate(init.color, fin.color, t);
 
     if (t > 1.0)
     {
       t = 0.0;
       // set initial to current
-      // init.b0 = current.b0;
-      // init.b1 = current.b1;
-      // init.b2 = current.b2;
-      // init.b3 = current.b3;
-      init = current;
+      init.b0 = current.b0;
+      init.b1 = current.b1;
+      init.b2 = current.b2;
+      init.b3 = current.b3;
+      // init = current;
 
       // set final to new curve
       fin.b0 = (generateRandomVector());
@@ -65,13 +63,13 @@ public:
       fin.b2 = (generateRandomVector());
       fin.b3 = (generateRandomVector());
 
-      randColor1 = agl::randomUnitVector()/2.5f;
-      randColor2 = agl::randomUnitVector()/2.5f;
+      // randColor1 = agl::randomUnitVector()/2.5f;
+      fin.color = agl::randomUnitVector()/2.5f;
     }
 
     else
     {
-      t += 0.15;
+      t += 0.08;
       timer += t;
       if (timer > 0.2){
         curves.push_back(current);
@@ -83,16 +81,10 @@ public:
       }
     }
 
-    // current.b0 = interpolate(init.b0, fin.b0, t);
-    // current.b1 = interpolate(init.b1, fin.b1, t);
-    // current.b2 = interpolate(init.b2, fin.b2, t);
-    // current.b3 = interpolate(init.b3, fin.b3, t);
-    randColor3 = interpolate(randColor1, randColor2, t);
-
     for(Curve& curr: curves) {
       for (float i = 0.0; i < 1.0; i += 0.002)
       {
-        drawCurve(curr.b0, curr.b1, curr.b2, curr.b3, i, randColor3);
+        drawCurve(curr.b0, curr.b1, curr.b2, curr.b3, i, curr.color);
       }
     }
   }
@@ -105,7 +97,7 @@ public:
     float term4 = (std::pow(t, 3));
     curve = term1 * B0 + term2 * B1 + term3 * B2 + term4 * B3;
     setColor(color);
-    drawSphere(curve, 1);
+    drawSphere(curve, 1.5);
   }
 
   virtual vec3 generateRandomVector()
@@ -124,15 +116,13 @@ public:
     vec3 b1;
     vec3 b2;
     vec3 b3;
+    vec3 color;
   };
 
 private:
   vec3 curve;
   float t;
-  vec3 randColor1;
-  vec3 randColor2;
-  vec3 randColor3;
-  int max = 30;
+  int max = 40;
   list<Curve> curves;
 
   float timer;
