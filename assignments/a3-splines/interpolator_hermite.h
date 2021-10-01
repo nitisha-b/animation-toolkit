@@ -17,11 +17,12 @@ public:
 
     virtual glm::vec3 interpolate(int segment, double u) const {
 
+        // use the hermite interpolation formula, where segment*i is p0 and segment*i+2 is p1
         float t1 = 2 * pow(u,3) - 3 * pow(u,2) + 1; 
         float t2 = u * pow((1-u), 2); 
         float t3 =  -pow(u,2) +  pow(u,3);
         float t4 = 3 * pow(u,2) - 2 * pow(u,3); 
-        glm::vec3 p = t1 * mCtrlPoints[segment] + t2 * mCtrlPoints[segment+1] + t3 * mCtrlPoints[segment+2] + t4 * mCtrlPoints[segment+3];
+        glm::vec3 p = t1 * mCtrlPoints[segment*2] + t2 * mCtrlPoints[segment*2+1] + t3 * mCtrlPoints[segment*2+3] + t4 * mCtrlPoints[segment*2+2];
        return p;
     }
 
@@ -56,6 +57,7 @@ public:
 
             for (int j = 0; j <= k+4; j++) {
                 glm::vec3 a = glm::vec3(pPrime(j,0), pPrime(j,1), 0);
+                // push in the order p0p'0 p1p'1
                 mCtrlPoints.push_back(keys[j]);
                 mCtrlPoints.push_back(a);
             }
