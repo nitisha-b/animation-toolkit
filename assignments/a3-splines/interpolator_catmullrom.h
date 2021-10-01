@@ -15,7 +15,14 @@ public:
    InterpolatorCatmullRom() : Interpolator("Catmull-Rom") {}
 
    virtual glm::vec3 interpolate(int segment, double u) const {
-      int n = 4*segment-1; // index
+      
+      int n = 0;
+      if (segment == 0) {
+         n = 4*segment; // index
+      }
+      else {
+         n = 4*segment-1; // index
+      }
 
       glm::vec3 b0 = mCtrlPoints[n];
       glm::vec3 b1 = mCtrlPoints[n+1];
