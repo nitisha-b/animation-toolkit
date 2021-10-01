@@ -33,12 +33,12 @@ public:
         A(4,0) =  0; A(4,1) = 0; A(4,2) = 0; A(4,3) = 1; A(4,4) = 2;
 
         // use 5 points at a time 
-        for (int i = 0; i < keys.size()-4; i += 4) {
-            glm::vec3 v0 = 3.0f *(keys[i+1] - keys[i]);
-            glm::vec3 v1 = 3.0f *(keys[i+2] - keys[i]);
-            glm::vec3 v2 = 3.0f *(keys[i+3] - keys[i+1]);
-            glm::vec3 v3 = 3.0f *(keys[i+4] - keys[i+2]);
-            glm::vec3 v4 = 3.0f *(keys[i+4] - keys[i+3]);
+        for (int k = 0; k < keys.size()-4; k += 4) {
+            glm::vec3 v0 = 3.0f *(keys[k+1] - keys[k]);
+            glm::vec3 v1 = 3.0f *(keys[k+2] - keys[k]);
+            glm::vec3 v2 = 3.0f *(keys[k+3] - keys[k+1]);
+            glm::vec3 v3 = 3.0f *(keys[k+4] - keys[k+2]);
+            glm::vec3 v4 = 3.0f *(keys[k+4] - keys[k+3]);
 
             // populate p 
             p(0,0) = v0[0]; p(0,1) = v0[1]; p(0,2) = v0[2];
@@ -49,8 +49,9 @@ public:
 
             pPrime = A.inverse() * p;
 
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j <= k+4; j++) {
                 glm::vec3 a = glm::vec3(pPrime(j,0), pPrime(j,1), 0);
+                mCtrlPoints.push_back(keys[j]);
                 mCtrlPoints.push_back(a);
             }
         }
