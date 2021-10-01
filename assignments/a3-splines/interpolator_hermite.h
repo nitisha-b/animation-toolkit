@@ -17,7 +17,12 @@ public:
 
     virtual glm::vec3 interpolate(int segment, double u) const {
 
-       return glm::vec3(0);
+        float t1 = 2 * pow(u,3) - 3 * pow(u,2) + 1; 
+        float t2 = u * pow((1-u), 2); 
+        float t3 =  -pow(u,2) +  pow(u,3);
+        float t4 = 3 * pow(u,2) - 2 * pow(u,3); 
+        glm::vec3 p = t1 * mCtrlPoints[segment] + t2 * mCtrlPoints[segment+1] + t3 * mCtrlPoints[segment+2] + t4 * mCtrlPoints[segment+3];
+       return p;
     }
 
     virtual void computeControlPoints(const std::vector<glm::vec3>& keys) {
