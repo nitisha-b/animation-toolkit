@@ -30,7 +30,35 @@ void CurveEditor::setup() {
 
 void CurveEditor::scene() {
   drawState();
-  // todo: your code here
+  // Interpolator interp;
+  setColor(vec3(1,1,1));
+  InterpolatorLinear interp; 
+
+  // if (mSpline.getInterpolationType() == "Linear") {
+  //   InterpolatorLinear interp; 
+  // }
+  // if (mSpline.getInterpolationType() == "Catmull-Rom") {
+  //   InterpolatorCatmullRom interp; 
+    
+  // }
+  // if (mSpline.getInterpolationType() == "Hermite") {
+  //   InterpolatorHermite interp; 
+  
+  // }
+    std::vector<vec3> keys;
+   keys.push_back(vec3(0,0,0));
+   keys.push_back(vec3(1,1,0));
+   keys.push_back(vec3(2,0,0));
+
+  //  InterpolatorLinear interp;
+   interp.computeControlPoints(keys);
+  // interp.computeControlPoints(interp.computeControlPoints(mSpline.getK))
+  for (int s = 0; s < mSpline.getNumSegments(); s++) {
+    for (float u = 0.0f; u <= 1.0f; u += 0.01) {
+      vec3 p = interp.interpolate(s, u);
+      drawSphere(p, 2);
+    }
+  }
 }
 
 void CurveEditor::addPoint(const vec3& p) {

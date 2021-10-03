@@ -102,7 +102,27 @@ glm::vec3 Spline::getValue(float t) const {
     mDirty = false;
   }
 
-  // todo: your code here
+  if (mInterpolator->getType() == "Linear") {
+    int segment = mInterpolator->getNumControlPoints() / 2;
+    int index = -1;
+    
+    for(int i = 0; i<mTimes.size()-1; i++) {
+      if (mTimes[i]  == t) {
+        index = i;
+      }
+    }
+    // num of segments == keys.size()-1 --> segment == index 
+    float u = (t - mTimes[index])/(mTimes[index+1]-mTimes[index]);
+
+    return mInterpolator->interpolate(index, u);
+  }
+
+  // divide keys.size() / # of ctrl pts depending on interpolation type 
+  // find given t in mTimes
+  // find index of key corresponding to index of t 
+  // find which segment key is in - keys are in order - left to right 
+
+
   // compute the segment containing t
   // compute the value [0, 1] along the segment for interpolation
   return glm::vec3(0); 
