@@ -45,6 +45,9 @@ public:
 
    void fromAxisAngle(const Vector3& axis, double rad);
    void toAxisAngle(Vector3& axis, double& rad) const;
+   Matrix3 computeRx(float x);
+   Matrix3 computeRy(float y);
+   Matrix3 computeRz(float z);
 
     // Conversion with Quaternion
     Quaternion toQuaternion() const;
