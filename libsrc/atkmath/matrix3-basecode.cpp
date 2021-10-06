@@ -6,32 +6,50 @@ namespace atkmath
 
    Vector3 Matrix3::toEulerAnglesXYZ() const
    {
-      return Vector3();
+      float y = asin(mM[0][2]);
+      float x = -atan2(mM[1][2], mM[2][2]);
+      float z = -atan2(mM[0][1], mM[0][0]);
+      return Vector3(x,y,z);
    }
 
    Vector3 Matrix3::toEulerAnglesXZY() const
    {
-      return Vector3();
+      float z = -asin(mM[0][1]);
+      float y = atan2(mM[0][2], mM[0][0]);
+      float x = atan2(mM[2][1], mM[1][1]);
+      return Vector3(x,y,z);
    }
 
    Vector3 Matrix3::toEulerAnglesYXZ() const
    {
-      return Vector3();
+      float x = -asin(mM[1][2]);
+      float y = atan2(mM[0][2], mM[2][2]);
+      float z = atan2(mM[1][0], mM[1][1]);
+      return Vector3(x,y,z);
    }
 
    Vector3 Matrix3::toEulerAnglesYZX() const
    {
-      return Vector3();
+      float z = asin(mM[1][0]);
+      float x = -atan2(mM[1][2], mM[1][1]);
+      float y = -atan2(mM[2][0], mM[0][0]);
+      return Vector3(x,y,z);
    }
 
    Vector3 Matrix3::toEulerAnglesZXY() const
    {
-      return Vector3();
+      float x = asin(mM[2][1]);
+      float y = -atan2(mM[2][0], mM[2][2]);
+      float z = -atan2(mM[0][1], mM[1][1]);
+      return Vector3(x,y,z);
    }
 
    Vector3 Matrix3::toEulerAnglesZYX() const
    {
-      return Vector3();
+      float x = atan2(mM[2][1], mM[2][2]);
+      float y = -asin(mM[2][0]);
+      float z = atan2(mM[1][0], mM[0][0]);
+      return Vector3(x,y,z);
    }
 
    void Matrix3::fromEulerAnglesXYZ(const Vector3 &angleRad)
