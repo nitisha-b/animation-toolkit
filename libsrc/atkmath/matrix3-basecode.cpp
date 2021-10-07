@@ -3,52 +3,160 @@
 
 namespace atkmath
 {
-
    Vector3 Matrix3::toEulerAnglesXYZ() const
    {
-      float y = asin(mM[0][2]);
-      float x = -atan2(mM[1][2], mM[2][2]);
-      float z = -atan2(mM[0][1], mM[0][0]);
+      float x = 0.0f; 
+      float z = 0.0f;
+      float y = 0.0f;
+     
+     // Middle angle is 90
+      if(mM[0][2] == -1.0) {
+         // set one angle to 0
+         x = 0.0f;
+         z = -atan2(mM[2][1], mM[1][1]);
+         y = -(float)PI_2;
+      }
+      else if (mM[0][2] == 1.0)
+      {
+         x = 0.0f;
+         z = atan2(mM[2][1], mM[1][1]);
+         y = (float)PI_2;
+      }
+      // Normal conditions
+      else {
+         y = asin(mM[0][2]);
+         x = -atan2(mM[1][2], mM[2][2]);
+         z = -atan2(mM[0][1], mM[0][0]);
+      }
       return Vector3(x,y,z);
    }
 
    Vector3 Matrix3::toEulerAnglesXZY() const
    {
-      float z = -asin(mM[0][1]);
-      float y = atan2(mM[0][2], mM[0][0]);
-      float x = atan2(mM[2][1], mM[1][1]);
+      float x = 0.0f; 
+      float y = 0.0f; 
+      float z = 0.0f; 
+
+      // if z = 90
+      if (mM[0][1] == -1.0) {
+         // set y = 0
+         y = 0.0f; 
+         x = atan2(mM[2][0], mM[1][0]);
+         z = (float)PI_2;
+      }
+      // z = -90
+      else if (mM[0][1] == 1.0) {
+         y = 0.0f; 
+         x = -atan2(mM[1][2], mM[2][2]);
+         z = -(float)PI_2;
+      }
+      else {
+         z = -asin(mM[0][1]);
+         y = atan2(mM[0][2], mM[0][0]);
+         x = atan2(mM[2][1], mM[1][1]);
+      }
       return Vector3(x,y,z);
    }
 
    Vector3 Matrix3::toEulerAnglesYXZ() const
    {
-      float x = -asin(mM[1][2]);
-      float y = atan2(mM[0][2], mM[2][2]);
-      float z = atan2(mM[1][0], mM[1][1]);
+      float x = 0.0f; 
+      float y = 0.0f; 
+      float z = 0.0f; 
+
+      // x = 90
+      if(mM[1][2] == -1.0) {
+         x = (float)PI_2;
+         // set z = 0
+         z = 0.0f; 
+         y = atan2(mM[0][1], mM[0][0]);
+      }
+      // x = -90
+      else if (mM[1][2] == 1.0) {
+         x = -(float)PI_2;
+         z = 0.0f; 
+         y = -atan2(mM[0][1], mM[0][0]);
+      }
+      else {
+         x = -asin(mM[1][2]);
+         y = atan2(mM[0][2], mM[2][2]);
+         z = atan2(mM[1][0], mM[1][1]);
+      }
       return Vector3(x,y,z);
    }
 
    Vector3 Matrix3::toEulerAnglesYZX() const
    {
-      float z = asin(mM[1][0]);
-      float x = -atan2(mM[1][2], mM[1][1]);
-      float y = -atan2(mM[2][0], mM[0][0]);
+      float x = 0.0f; 
+      float y = 0.0f; 
+      float z = 0.0f; 
+
+      // z = 90
+      if(mM[1][0] == 1.0) {
+         y = 0.0f;
+         x = atan2(mM[2][1], mM[2][2]);
+         z = (float)PI_2;
+      }
+      else if (mM[1][0] == -1.0) {
+         y = 0.0f;
+         x = atan2(mM[2][1], mM[2][2]);
+         z = -(float)PI_2;
+      }
+      else {
+         z = asin(mM[1][0]);
+         x = -atan2(mM[1][2], mM[1][1]);
+         y = -atan2(mM[2][0], mM[0][0]);
+      }
       return Vector3(x,y,z);
    }
 
    Vector3 Matrix3::toEulerAnglesZXY() const
    {
-      float x = asin(mM[2][1]);
-      float y = -atan2(mM[2][0], mM[2][2]);
-      float z = -atan2(mM[0][1], mM[1][1]);
+      float x = 0.0f; 
+      float y = 0.0f; 
+      float z = 0.0f; 
+
+      // x = 90
+      if (mM[2][1] == 1.0) {
+         z = 0.0f;
+         y = atan2(mM[1][0], mM[0][0]);
+         x = (float)PI_2;
+      }
+      else if (mM[2][1] == -1.0) {
+         z = 0.0f;
+         y = -atan2(mM[1][0], mM[0][0]);
+         x = -(float)PI_2;
+      }
+      else {
+         x = asin(mM[2][1]);
+         y = -atan2(mM[2][0], mM[2][2]);
+         z = -atan2(mM[0][1], mM[1][1]);
+      }
       return Vector3(x,y,z);
    }
 
    Vector3 Matrix3::toEulerAnglesZYX() const
    {
-      float x = atan2(mM[2][1], mM[2][2]);
-      float y = -asin(mM[2][0]);
-      float z = atan2(mM[1][0], mM[0][0]);
+      float x = 0.0f; 
+      float y = 0.0f; 
+      float z = 0.0f; 
+
+      // y = 90
+      if (mM[2][0] == -1.0) {
+         z = 0.0f;
+         x = atan2(mM[0][1], mM[1][1]);
+         y = (float)PI_2;
+      }
+      else if (mM[2][0] == 1.0) {
+         z = 0.0f;
+         x = -atan2(mM[0][1], mM[1][1]);
+         y = -(float)PI_2;
+      }
+      else {
+         x = atan2(mM[2][1], mM[2][2]);
+         y = -asin(mM[2][0]);
+         z = atan2(mM[1][0], mM[0][0]);
+      }
       return Vector3(x,y,z);
    }
 
