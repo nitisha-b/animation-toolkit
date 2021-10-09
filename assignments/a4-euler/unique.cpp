@@ -21,23 +21,24 @@ public:
       thetaRate = 0.02f;
       idvTheta = 0.0;
       thetaRate2 = 0.05f;
-      r = 45;
-      t = 0.0f;
+      r = 40;
    }
 
    virtual void scene()
    {
-      for (int i = 0; i < 7; i++)
+      for (int i = 0; i < 8; i++)
       {
          theta += thetaRate * dt();
          idvTheta += thetaRate2 * dt();
 
-         float t_x = i * px / width() / 10;
+         float t_x = i * x / width() / 10;
          t_x = glm::clamp(t_x, 0.0f, 1.0f);
 
-         c_x0 = c_nw * (1 - theta) + c_ne * theta;
-         c_x1 = c_sw * (1 - theta) + c_se * theta;
-         vec3 c = c_x0 * (1 - theta) + c_x1 * theta;
+         x0 = pallet[i+1] * (1 - t_x) + pallet[i+4] * t_x;
+         x1 = pallet[i] * (1 - t_x) + pallet[i+2] * t_x;
+
+         x2 = pallet[i] * (1 - t_x) + pallet[i+1] * t_x;
+         x3 = pallet[i+2] * (1 - t_x) + pallet[i+3] * t_x;
 
          // change direction for alternating circles
          int direction = 1;
@@ -47,33 +48,40 @@ public:
          }
 
          float outerRad = i * r;
-         setColor(c);
 
          for (int j = 0; j < 36; j++)
          {
-            // get interpolated color
-            // vec3 c = interpolateColor();
+            // interpolate color
+            float t_y = j * y / height() / 10;
+            t_y = glm::clamp(t_y, 0.0f, 1.0f);
 
-            // float t_y = j * py / height() / 10;
-            // t_y = glm::clamp(t_y, 0.0f, 1.0f);
+            vec3 c1 = x0 * (1 - t_y) + x1 * t_y;
+            vec3 c2 = x2 * (1 - t_y) + x3 * t_y;
 
-            // vec3 c = c_x0 * (1 - theta) + c_x1 * theta;
+            x = i * width()/10 + height()/20;
+            y = j * height()/10 + height()/20; 
+
+            if (direction == 1){
+               setColor(c1);
+            }
+            else {
+               setColor(c2);
+            }
 
             Matrix3 rot;
-            Vector3 euler(30, 90, 0);
+            Vector3 euler(90, 45, 13);
 
             float size = 18.0;
-            px = outerRad * cos(direction * theta + j * (15 * M_PI / 180)) + 0.5 * width();
-            py = outerRad * sin(direction * theta + j * (15 * M_PI / 180)) + 0.5 * height();
+            px = outerRad * cos(direction * theta + j * (18 * M_PI / 180)) + 0.5 * width();
+            py = outerRad * sin(direction * theta + j * (18 * M_PI / 180)) + 0.5 * height();
 
             Vector3 eulerRad = euler * Deg2Rad;
             
             push();
             translate(vec3(px, py, 0));
-            rotate(eulerRad[0] + idvTheta, vec3(1, 0, 0));
-            rotate(eulerRad[1] + idvTheta, vec3(0, 1, 0));
-            rotate(eulerRad[2] + idvTheta, vec3(0, 0, 1));
-
+            rotate(direction * eulerRad[0] + idvTheta, vec3(1, 0, 0));
+            rotate(direction * eulerRad[1] + idvTheta, vec3(0, 1, 0));
+            rotate(direction * eulerRad[2] + idvTheta, vec3(0, 0, 1));
             drawCone(vec3(0), size);
             pop();
          }
@@ -87,8 +95,9 @@ public:
    float py;
    float idvTheta;
    float thetaRate2;
-   float t;
-   float i = 0.0f;
+   float x = 0; 
+   float y = 0;
+   vec3 x0, x1, x2, x3 = vec3(0);
 
    std::vector<vec3> pallet =
        {
@@ -101,16 +110,9 @@ public:
            vec3(141, 215, 191) / 255.0f,
            vec3(255, 150, 197) / 255.0f,
            vec3(255, 87, 104) / 255.0f,
-           vec3(255, 162, 58) / 255.0f};
-
-   vec3 c1 = vec3(0.15, 0.6, 0.19);
-   vec3 c2 = vec3(0.24, 0.14, 0.75);
-   vec3 c_nw = vec3(1, 1, 0);
-   vec3 c_ne = vec3(0, 1, 1);
-   vec3 c_sw = vec3(1, 0, 0);
-   vec3 c_se = vec3(1, 0, 1);
-   vec3 c_x0;
-   vec3 c_x1;
+           vec3(255, 162, 58) / 255.0f,
+           vec3(196, 215, 113)/ 255.0f,
+           vec3(41, 237, 216) / 255.0f };
 
 };
 
