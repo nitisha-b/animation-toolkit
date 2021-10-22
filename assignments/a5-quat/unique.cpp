@@ -70,13 +70,23 @@ public:
             setColor(c);
 
             vec3 diff = target - pos;
+            float distance = sqrt(pow(diff.x,2) + pow(diff.y,2));
             theta = atan2(diff.y, diff.x);
 
-            push();
-            translate(vec3(x, y, 0));
-            rotate(theta, vec3(0, 0, 1));
-            drawCube(vec3(0), vec3(size, 1, 0));
-            pop();
+            if (distance < 75.0f) {
+               push();
+               translate(vec3(x, y, 0));
+               rotate(theta, vec3(0, 0, 1));
+               drawCube(vec3(0), vec3(size, 1, 0));
+               pop();
+            }
+            else {
+               push();
+               translate(vec3(x, y, 0));
+               rotate(0, vec3(0, 0, 1));
+               drawCube(vec3(0), vec3(size, 1, 0));
+               pop();
+            }
          }
       }
    }
