@@ -199,13 +199,34 @@ namespace atkmath
 
    void Matrix3::toAxisAngle(Vector3 &axis, double &angleRad) const
    {
-      // TODO
+      Quaternion quat;
+      quat.fromMatrix(*this);
+      quat.toAxisAngle(axis, angleRad);  
    }
 
    void Matrix3::fromAxisAngle(const Vector3 &axis, double angleRad)
    {
-      // TODO
       *this = Identity;
+      // double a = angleRad;
+      // float x = axis[0]; 
+      // float y = axis[1];
+      // float z = axis[2];
+
+      // m11 = cos(a) + (1 - cos(a)) * pow(x,2);
+      // m12 = -sin(a) * z + (1- cos(a)) * x * y;
+      // m13 = y * sin(a) + x * z * (1- cos(a));
+
+      // m21 = -z * sin(a) + (1- cos(a)) * x * y; 
+      // m22 = cos(a) + (1 - cos(a)) * pow(y,2);
+      // m23 = -x * sin(a) + (1 - cos(a)) * y * z;
+
+      // m31 = y * sin(a) + x * y * (1- cos(a));
+      // m32 = -x * sin(a) + (1 - cos(a)) * y * z;
+      // m33 = cos(a) + (1 - cos(a)) * pow(z,2);
+
+      Quaternion quat;
+      quat.fromAxisAngle(axis, angleRad);
+      *this = quat.toMatrix();
 
    }
 
