@@ -26,35 +26,68 @@ public:
       y = 0;
       t_x = 0;
       t_y = 0;
+      _mouseX = width() * 0.5;
+      _mouseY = height() * 0.5;
+      theta = 0.0;
+      thetaRate = 0.6;
+      mousePos = vec3(_mouseX, _mouseY, 0);
    }
 
    virtual void scene()
    {
       float size = height() / 20;
 
+      mousePos = vec3(mousePosition().x, mousePosition().y, 0);
+      mouseMotion(mousePosition().x, mousePosition().y, mousePosition().x - _mouseX, mousePosition().y - _mouseY);
+      mouseMove(mousePosition().x, mousePosition().y);
+      vec3 target = vec3(_mouseX, _mouseY, 0);
+      setColor(vec3(1, 0, 0));
+      drawSphere(target, 15);
+
       for (float i = 0; i < 20; i++)
       {
+         // time for interpolation
          t_x = i * x / width() / 10;
          t_x = glm::clamp(t_x, 0.0f, 1.0f);
 
+         // interpolate colors
          vec3 c_x0 = c_nw * (1 - t_x) + c_ne * t_x;
          vec3 c_x1 = c_sw * (1 - t_x) + c_se * t_x;
 
          for (float j = 0; j < 20; j++)
          {
+            // time for interpolation
             t_y = j * y / height() / 10;
             t_y = glm::clamp(t_y, 0.0f, 1.0f);
 
+            // level 2 LERP
             vec3 c = c_x0 * (1 - t_y) + c_x1 * t_y;
 
+            // position of the cuboids 
             x = i * width() / 20 + size / 2;
             y = j * height() / 20 + size / 2;
+            vec3 pos = vec3(x,y,0);
             setColor(c);
-            drawCube(vec3(x, y, 0), vec3(size, 2, 0));
+
+            vec3 diff = target - pos;
+            theta = atan2(diff.y, diff.x);
+
+            float px = i * cos(theta) * width() / 20 + size / 2;
+            float py = j * sin(theta) * height() / 20 + size / 2;
+
+         
+            drawCube(vec3(px, py, 0), vec3(size, 2, 0));
          }
       }
    }
 
+   void mouseMove(int x, int y)
+   {
+      _mouseX = x;
+      _mouseY = height() - y;
+   }
+
+private:
    vec3 c_nw;
    vec3 c_ne;
    vec3 c_sw;
@@ -64,6 +97,11 @@ public:
    float t;
    float t_x;
    float t_y;
+   int _mouseX;
+   int _mouseY;
+   float theta;
+   float thetaRate;
+   vec3 mousePos;
 
    std::vector<vec3> pallet =
        {
