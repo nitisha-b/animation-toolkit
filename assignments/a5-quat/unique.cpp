@@ -63,65 +63,64 @@ public:
             // level 2 LERP
             vec3 c = c_x0 * (1 - t_y) + c_x1 * t_y;
 
-            // position of the cuboids 
+            // position of the cuboids
             x = i * width() / 20 + size / 2;
             y = j * height() / 20 + size / 2;
-            vec3 pos = vec3(x,y,0);
+            vec3 pos = vec3(x, y, 0);
             setColor(c);
 
             vec3 diff = target - pos;
             theta = atan2(diff.y, diff.x);
 
-            float px = i * cos(theta) * width() / 20 + size / 2;
-            float py = j * sin(theta) * height() / 20 + size / 2;
-
-         
-            drawCube(vec3(px, py, 0), vec3(size, 2, 0));
+            push();
+            translate(vec3(x, y, 0));
+            rotate(theta, vec3(0, 0, 1));
+            drawCube(vec3(0), vec3(size, 1, 0));
+            pop();
          }
       }
    }
+      void mouseMove(int x, int y)
+      {
+         _mouseX = x;
+         _mouseY = height() - y;
+      }
 
-   void mouseMove(int x, int y)
+   private:
+      vec3 c_nw;
+      vec3 c_ne;
+      vec3 c_sw;
+      vec3 c_se;
+      float x;
+      float y;
+      float t;
+      float t_x;
+      float t_y;
+      int _mouseX;
+      int _mouseY;
+      float theta;
+      float thetaRate;
+      vec3 mousePos;
+
+      std::vector<vec3> pallet =
+          {
+              vec3(0, 165, 227) / 255.0f,
+              vec3(141, 215, 191) / 255.0f,
+              vec3(255, 150, 197) / 255.0f,
+              vec3(255, 87, 104) / 255.0f,
+              vec3(255, 162, 58) / 255.0f,
+              vec3(0, 165, 227) / 255.0f,
+              vec3(141, 215, 191) / 255.0f,
+              vec3(255, 150, 197) / 255.0f,
+              vec3(255, 87, 104) / 255.0f,
+              vec3(255, 162, 58) / 255.0f,
+              vec3(196, 215, 113) / 255.0f,
+              vec3(41, 237, 216) / 255.0f};
+   };
+
+   int main(int argc, char **argv)
    {
-      _mouseX = x;
-      _mouseY = height() - y;
+      Unique viewer;
+      viewer.run();
+      return 0;
    }
-
-private:
-   vec3 c_nw;
-   vec3 c_ne;
-   vec3 c_sw;
-   vec3 c_se;
-   float x;
-   float y;
-   float t;
-   float t_x;
-   float t_y;
-   int _mouseX;
-   int _mouseY;
-   float theta;
-   float thetaRate;
-   vec3 mousePos;
-
-   std::vector<vec3> pallet =
-       {
-           vec3(0, 165, 227) / 255.0f,
-           vec3(141, 215, 191) / 255.0f,
-           vec3(255, 150, 197) / 255.0f,
-           vec3(255, 87, 104) / 255.0f,
-           vec3(255, 162, 58) / 255.0f,
-           vec3(0, 165, 227) / 255.0f,
-           vec3(141, 215, 191) / 255.0f,
-           vec3(255, 150, 197) / 255.0f,
-           vec3(255, 87, 104) / 255.0f,
-           vec3(255, 162, 58) / 255.0f,
-           vec3(196, 215, 113) / 255.0f,
-           vec3(41, 237, 216) / 255.0f};
-};
-
-int main(int argc, char **argv)
-{
-   Unique viewer;
-   viewer.run();
-   return 0;
-}
