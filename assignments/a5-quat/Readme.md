@@ -1,7 +1,7 @@
 # Readme
 
-TODO: Replace this text with
+### Unique: 
+Cuboids within a certain radius follow the cursor by rotating to point towards it. <br>
 
-* images, gifs, videos
-* brief description of what each image/gif/video shows
+![](http://g.recordit.co/eXyY3cuuuq.gif)
 

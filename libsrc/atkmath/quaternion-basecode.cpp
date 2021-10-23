@@ -16,10 +16,12 @@ void Quaternion::toAxisAngle (Vector3& axis, double& angleRad) const
 
 	// check if angleRad is close to 0 	
 	// If 0 - there is no rotation, hardcode an axis w/ unit length
-
-	if (angleRad < 0.5) {
+	if (std::abs(angleRad) < 0.000001) {
 		Vector3 *a = new Vector3(0, 0, 1);
 		axis = *a;
+		// axis[0] = 0; 
+		// axis[1] = 0; 
+		// axis[2] = 1;
 	}
 	else {
 		float sinVal = sin(angleRad/2);
@@ -28,11 +30,10 @@ void Quaternion::toAxisAngle (Vector3& axis, double& angleRad) const
 		float vZ = this->mZ/sinVal; 
 		Vector3 *a = new Vector3(vX, vY, vZ);
 		axis = *a;
+		// axis[0] = vX;
+		// axis[1] = vY; 
+		// axis[2] = vZ;
 	} 
-	// std::cout << " x " << this->mX << " y " << this->mY << " z " << this->mZ << std::endl;
-	// axis[0] = vX; 
-	// axis[1] = vY; 
-	// axis[2] = vZ;
 }
 
 void Quaternion::fromAxisAngle (const Vector3& axis, double angleRad)
@@ -47,9 +48,10 @@ void Quaternion::fromAxisAngle (const Vector3& axis, double angleRad)
 Matrix3 Quaternion::toMatrix () const
 {
 	Matrix3 m = Matrix3(); 
+
 	m[0][0] = 1 - 2 * (pow(this->mY,2) + pow(this->mZ,2));
 	m[0][1] = 2 * (this->mX * this->mY - this->mW * this->mZ);
-	m[0][1] = 2 * (this->mX * this->mZ + this->mW * this->mY);
+	m[0][2] = 2 * (this->mX * this->mZ + this->mW * this->mY);
 
 	m[1][0] = 2 * (this->mX * this->mY + this->mW * this->mZ);
 	m[1][1] = 1 - 2 * (pow(this->mX,2) + pow(this->mZ,2));
