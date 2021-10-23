@@ -71,7 +71,7 @@ public:
 
             // calculate the rotation angle for each cuboid w.r.t mousePos
             vec3 diff = target - pos;
-            float distance = sqr1t(pow(diff.x,2) + pow(diff.y,2));
+            float distance = sqrt(pow(diff.x,2) + pow(diff.y,2));
             theta = atan2(diff.y, diff.x);
 
             if (distance < 75.0f) {
