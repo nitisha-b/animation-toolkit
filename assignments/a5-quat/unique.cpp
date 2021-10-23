@@ -35,7 +35,7 @@ public:
 
    virtual void scene()
    {
-      float size = height() / 20;
+      float size = height() / 25;
 
       mousePos = vec3(mousePosition().x, mousePosition().y, 0);
       mouseMotion(mousePosition().x, mousePosition().y, mousePosition().x - _mouseX, mousePosition().y - _mouseY);
@@ -44,7 +44,7 @@ public:
       setColor(vec3(1, 0, 0));
       drawSphere(target, 15);
 
-      for (float i = 0; i < 20; i++)
+      for (float i = 0; i < 25; i++)
       {
          // time for interpolation
          t_x = i * x / width() / 10;
@@ -54,7 +54,7 @@ public:
          vec3 c_x0 = c_nw * (1 - t_x) + c_ne * t_x;
          vec3 c_x1 = c_sw * (1 - t_x) + c_se * t_x;
 
-         for (float j = 0; j < 20; j++)
+         for (float j = 0; j < 25; j++)
          {
             // time for interpolation
             t_y = j * y / height() / 10;
@@ -64,18 +64,23 @@ public:
             vec3 c = c_x0 * (1 - t_y) + c_x1 * t_y;
 
             // position of the cuboids
-            x = i * width() / 20 + size / 2;
-            y = j * height() / 20 + size / 2;
+            x = i * width() / 25 + size / 2;
+            y = j * height() / 25 + size / 2;
             vec3 pos = vec3(x, y, 0);
             setColor(c);
 
+            // calculate the rotation angle for each cuboid w.r.t mousePos
             vec3 diff = target - pos;
-            float distance = sqrt(pow(diff.x,2) + pow(diff.y,2));
+            float distance = sqr1t(pow(diff.x,2) + pow(diff.y,2));
             theta = atan2(diff.y, diff.x);
 
             if (distance < 75.0f) {
                push();
                translate(vec3(x, y, 0));
+               // find z angle 
+
+
+               float newTheta = theta * pow(0.1, dt());
                rotate(theta, vec3(0, 0, 1));
                drawCube(vec3(0), vec3(size, 1, 0));
                pop();
