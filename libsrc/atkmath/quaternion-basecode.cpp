@@ -75,19 +75,19 @@ void Quaternion::fromMatrix(const Matrix3& rot)
 	float y2 = (1/4) * (1 - rot[0][0] + rot[1][1] - rot[2][2]);
 	float z2 = (1/4) * (1 - rot[0][0] - rot[1][1] + rot[2][2]);
 
-	if (w2 > x2 && w2 > y2 && w2 > z2) {
+	if (w2 >= x2 && w2 >= y2 && w2 >= z2) {
 		this->mW = sqrt(w2);
 		this->mX = (1/(4*this->mW)) * (rot[2][1] - rot[1][2]);
 		this->mY = (1/(4*this->mW)) * (rot[0][2] - rot[2][0]);
 		this->mZ = (1/(4*this->mW)) * (rot[1][0] - rot[0][1]);
 	}
-	else if (x2 > w2 && x2 > y2 && x2 > z2) {
+	else if (x2 >= w2 && x2 >= y2 && x2 >= z2) {
 		this->mX = sqrt(x2);
 		this->mW = (1/(4 * this->mX)) * (rot[2][1] - rot[1][2]);
 		this->mY = (1/(4 * this->mX)) * (rot[1][0] + rot[0][1]);
 		this->mZ = (1/(4 * this->mX)) * (rot[0][2] + rot[2][0]);
 	}
-	else if (y2 > w2 && y2 > x2 && y2 > z2) {
+	else if (y2 >= w2 && y2 >= x2 && y2 >= z2) {
 		this->mY = sqrt(y2);
 		this->mW = (1/(4 * this->mY)) * (rot[0][2] - rot[2][0]);
 		this->mX = (1/(4 * this->mY)) * (rot[1][0] + rot[0][1]);
