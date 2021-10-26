@@ -6,8 +6,36 @@ namespace atkmath {
 
 Quaternion Quaternion::Slerp(const Quaternion& q0, const Quaternion& q1, double t)
 {
-	// TODO
-	return Quaternion(1,0,0,0);
+
+	float q0q1 = Dot(q0, q1);
+	// compute angle omega
+	float omega = std::acos(q0q1);
+
+	// No rotation
+	if (omega == 0.0) {
+		return q0;
+	}
+	// potential NaN
+	if (omega < -1 || omega > 1) {
+		omega = glm::clamp(omega, -1.0f, 1.0f);
+	}
+
+	// compute q
+	float sO = sin(omega);
+	float sO1 = sin(omega * (1-t));
+	float sOt = sin (omega * t);
+
+	Quaternion q;
+	
+	if (q0q1 < 0) {
+		Quaternion q2 = -q1;
+		q = (sO1/sO) * q0 + (sOt/sO) * q2;
+	}
+	else {
+		q = (sO1/sO) * q0 + (sOt/sO) * q1;
+	}
+
+	return q;
 }
 
 void Quaternion::toAxisAngle (Vector3& axis, double& angleRad) const
@@ -22,7 +50,6 @@ void Quaternion::toAxisAngle (Vector3& axis, double& angleRad) const
 		// axis[0] = 0; 
 		// axis[1] = 0; 
 		// axis[2] = 1;
-		std::cout << "hi" << std::endl;
 	}
 	else {
 		float sinVal = sin(angleRad/2);
