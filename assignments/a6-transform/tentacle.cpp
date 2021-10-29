@@ -2,6 +2,8 @@
 #include "atk/toolkit.h"
 using namespace atk;
 using glm::vec3;
+using glm::quat;
+// using namespace atkmath;
 
 class Tentacle : public atkui::Framework {
 public:
@@ -20,6 +22,18 @@ public:
       _tentacle.addJoint(joint1, root);
 
       // todo: add more joints
+      Joint* joint2  = new Joint("joint2");
+      joint2->setLocalTranslation(vec3(0,50,0));
+      _tentacle.addJoint(joint2, joint1);
+
+      Joint* joint3  = new Joint("joint3");
+      joint3->setLocalTranslation(vec3(0,50,0));
+      _tentacle.addJoint(joint3, joint2);
+
+      Joint* joint4  = new Joint("joint4");
+      joint4->setLocalTranslation(vec3(0,50,0));
+      _tentacle.addJoint(joint4, joint3);
+
       _tentacle.fk(); // compute local2global transforms
    }
 
@@ -31,11 +45,20 @@ public:
       setColor(vec3(0,1,0));
 
       // todo: loop over all joints and draw
-      Joint* parent = _tentacle.getByID(0);
-      Joint* child = _tentacle.getByID(1);
-      vec3 globalParentPos = parent->getGlobalTranslation();
-      vec3 globalPos = child->getGlobalTranslation();
-      drawEllipsoid(globalParentPos, globalPos, 5);
+      // draw the root separately because it does not have a parent
+      // Joint* root = _tentacle.getByID(0);
+      // vec3 rootPos = root->getGlobalTranslation();
+      // drawEllipsoid(vec3(0), rootPos, 7);
+
+      for (int i = 1; i < _tentacle.getNumJoints(); i++) {
+         Joint* child = _tentacle.getByID(i);
+         Joint* parent = child->getParent();
+         vec3 globalParentPos = parent->getGlobalTranslation();
+         vec3 globalPos = child->getGlobalTranslation();
+         quat animate = glm::angleAxis(sin(elapsedTime()*i), vec3(0,0,1));
+         child->setLocalRotation(animate);
+         drawEllipsoid(globalParentPos, globalPos, 7);
+      }
    }
 
 protected:
