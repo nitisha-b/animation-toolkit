@@ -1,7 +1,6 @@
 # Readme
 
-TODO: Replace this text with
-
-* images, gifs, videos
-* brief description of what each image/gif/video shows
+## Tentacles: 
+Animate tentacles using sine <br>
+![](http://g.recordit.co/Hl8pQmU0Wi.gif)
 
