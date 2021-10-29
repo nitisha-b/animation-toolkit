@@ -55,7 +55,7 @@ public:
          Joint* parent = child->getParent();
          vec3 globalParentPos = parent->getGlobalTranslation();
          vec3 globalPos = child->getGlobalTranslation();
-         quat animate = glm::angleAxis(sin(elapsedTime()*i), vec3(0,0,1));
+         quat animate = glm::angleAxis(sin(elapsedTime()+i), vec3(0,0,1));
          child->setLocalRotation(animate);
          drawEllipsoid(globalParentPos, globalPos, 7);
       }
