@@ -122,17 +122,25 @@ public:
     {
         person1.fk(); // computes local2global transforms
         setColor(vec3(0, 0, 1));
+        vec3 offsetL = vec3(0,0,-200);
 
         Joint *root1 = person1.getByID(0);
-        vec3 globalPos = root1->getGlobalTranslation();
-        drawSphere(globalPos, 15);
+        vec3 rootPos = root1->getGlobalTranslation();
+        drawSphere(rootPos+offsetL, 15);
+
+        Joint *root2 = person2.getByID(0);
 
         for (int i = 1; i < person1.getNumJoints(); i++)
         {
+            // move in a straight line
+            if (abs((root1->getGlobalTranslation() - root2->getGlobalTranslation())[2]) < 350.0) {
+                person1.getByID(0)->setLocalTranslation(vec3(0, 120, 20*elapsedTime()));
+            }
+
             Joint *child = person1.getByID(i);
             if (child->getName() == "head1")
             {
-                drawSphere(child->getGlobalTranslation(), 25);
+                drawSphere(child->getGlobalTranslation()+offsetL, 25);
                 break;
             }
             Joint *parent = child->getParent();
@@ -141,25 +149,30 @@ public:
             // animate tentacle
             quat animate = glm::angleAxis(sin(elapsedTime() * i/2), vec3(0, 1, 0));
             child->setLocalRotation(animate);
-            drawEllipsoid(globalParentPos, globalPos, 10);
+            drawEllipsoid(globalParentPos+offsetL, globalPos+offsetL, 10);
         }
 
         // person 2
         person2.fk(); // computes local2global transforms
         setColor(vec3(1, 0, 0));
 
-        vec3 distance = vec3(0,0,30);
+        vec3 distance = vec3(0,0,100);
+        vec3 offsetR = vec3(0,0,200);
 
-        Joint *root2 = person2.getByID(0);
         vec3 globalPos2 = root2->getGlobalTranslation();
-        drawSphere(globalPos2+ distance, 15);
+        drawSphere(globalPos2+ offsetR, 15);
 
         for (int i = 1; i < person2.getNumJoints(); i++)
         {
+            // move in a straight line
+            if (abs((root1->getGlobalTranslation() - root2->getGlobalTranslation())[2]) < 350.0) {
+                person2.getByID(0)->setLocalTranslation(vec3(0,120,-20*elapsedTime()));
+            }
+
             Joint *child2 = person2.getByID(i);
             if (child2->getName() == "head")
             {
-                drawSphere(child2->getGlobalTranslation()+ distance, 25);
+                drawSphere(child2->getGlobalTranslation()+ offsetR, 25);
                 break;
             }
             Joint *parent2 = child2->getParent();
@@ -168,7 +181,7 @@ public:
             // animate tentacle
             quat animate2 = glm::angleAxis(sin(elapsedTime() * i/2), vec3(0, 1, 0));
             child2->setLocalRotation(animate2);
-            drawEllipsoid(globalParentPos2 + distance, globalPos2 + distance, 10);
+            drawEllipsoid(globalParentPos2 + offsetR, globalPos2 + offsetR, 10);
         }
     }
 
