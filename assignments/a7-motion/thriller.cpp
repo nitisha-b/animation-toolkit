@@ -7,6 +7,7 @@
 
 using namespace atk;
 using namespace glm;
+using namespace std;
 
 class Thriller : public atkui::Framework
 {
@@ -18,15 +19,35 @@ public:
       BVHReader reader;
       reader.load("../motions/Warrok/WarrokThriller.bvh", _skeleton, _motion);
 
-      vec3 position = vec3(0);
-      vec3 color = vec3(1,0,0);
-      float size = 1.0f;
-      _devil = Devil(position, color, size);
+      vector<vec3> positions; 
+
+      int x = -200; 
+      int y = 0; 
+      int z = -450; 
+
+      for (int i = 0; i < 3; i++) {
+         z += 200; 
+         x = 0;
+         for (int j = 0; j < 4; j++) {
+            x += 150; 
+            positions.push_back(vec3(x, y, z));
+         }
+      }
+
+      for (int i = 0; i < 12; i++) {
+         vec3 color = vec3(1,0,0);
+         float size = 1.0f;
+         _devil = Devil(positions[i], color, size);
+         devilList.push_back(_devil);
+      }
    }
 
    virtual void scene() {
       if (!_paused) _motion.update(_skeleton, elapsedTime());
-      _devil.draw(_skeleton, *this);
+      
+      for (int i = 0; i < devilList.size(); i++) {
+         devilList[i].draw(_skeleton, *this);
+      }
    }
 
    virtual void keyUp(int key, int mods) {
@@ -38,6 +59,7 @@ protected:
    Skeleton _skeleton;
    bool _paused = false;
    Devil _devil;
+   vector<Devil> devilList; 
 };
 
 int main(int argc, char** argv) {
