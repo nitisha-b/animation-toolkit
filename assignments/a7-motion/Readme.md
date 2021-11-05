@@ -1,7 +1,8 @@
 # Readme
 
-TODO: Replace this text with
+### Skeleton Motion
+Skeleton motions with pause, speed, and frame steps. <br>
+![](http://g.recordit.co/4BmSlO3wjc.gif)
 
-* images, gifs, videos
-* brief description of what each image/gif/video shows
-
+### Thriller 
+![](http://g.recordit.co/QgxBFpoy0e.gif)
