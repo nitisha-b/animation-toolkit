@@ -46,24 +46,24 @@ class Squirrel : public atkui::Framework {
       // todo tail
       push();
         translate(vec3(-100,-120,-20));
-        translate(-tail.pivot);
         rotate(tail.rotation, vec3(0,0,1));
+        translate(-tail.pivot);
         drawSprite(tail);
       pop();
 
       // arm1
       push();
-        translate(vec3(100,-20,-10));
-        translate(-arm1.pivot);
+        translate(vec3(50,-20,-10));
         rotate(arm1.rotation, vec3(0,0,1));
+        translate(-arm1.pivot);
         drawSprite(arm1);
       pop();
 
       // leg2
       push();
         translate(vec3(30,-140,-10));
-        translate(-leg2.pivot);
         rotate(leg2.rotation, vec3(0,0,1));
+        translate(-leg2.pivot);
         drawSprite(leg2);
       pop();
 
