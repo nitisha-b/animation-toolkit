@@ -35,8 +35,10 @@ public:
       }
 
       for (int i = 0; i < 12; i++) {
-         vec3 color = agl::randomUnitVector()/5.0f;
-         float size = random * (1.2f - 0.4f) + 0.4f;
+         vec3 color = agl::randomUnitVector();
+         // random float between 0.5-1.0
+         float randFloat = (float)rand()/(float)(RAND_MAX/1.4f);
+         float size = randFloat + 0.5f;
          _devil = Devil(positions[i], color, size);
          devilList.push_back(_devil);
       }
