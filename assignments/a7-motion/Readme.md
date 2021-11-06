@@ -12,3 +12,7 @@ Skeleton motions with pause, speed, and frame steps. <br>
 
 ### Squirrel
 ![](http://g.recordit.co/MzhNzzjD2r.gif)
+
+### Unique
+Dance party!! <br>
+![](http://g.recordit.co/1rZLDOOEb1.gif)
