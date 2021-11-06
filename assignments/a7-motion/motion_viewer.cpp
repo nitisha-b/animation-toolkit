@@ -55,12 +55,13 @@ public:
          drawEllipsoid(p1, p2, 5);
       }
 
-      // if (currentFrame >= motion.getNumKeys()) {
-      //    currentFrame = 0; 
-      // }
-      // else if (!periodPressed || !commaPressed){
-      //    currentFrame++;
-      // }
+      if (currentFrame >= motion.getNumKeys()) {
+         currentFrame = 0; 
+      }
+      else if (!periodPressed || !commaPressed){
+         currentFrame = motion.getFramerate()*time;
+      }
+      // currentFrame = motion.getFramerate()*time;
 
       drawText(paused? "Paused" : "Playing", 10, 15);
       drawText("Current frame: "+std::to_string(currentFrame), 10, 35);
