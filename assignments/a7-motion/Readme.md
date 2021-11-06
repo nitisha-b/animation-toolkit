@@ -7,5 +7,8 @@ Skeleton motions with pause, speed, and frame steps. <br>
 ### Thriller 
 ![](http://g.recordit.co/QgxBFpoy0e.gif)
 
+### Butterfly
+![](http://g.recordit.co/WWQ4FNoOIx.gif)
+
 ### Squirrel
 ![](http://g.recordit.co/MzhNzzjD2r.gif)
