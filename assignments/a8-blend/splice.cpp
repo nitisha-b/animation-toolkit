@@ -38,7 +38,7 @@ public:
       
       for (int i = 0; i < lower.getNumKeys(); i++) {
          Pose lowerPose = lower.getKey(i);
-         Pose upperPose = upper.getKey(i);
+         Pose upperPose = upper.getKey(i+120);
          
          for (int j = 0; j < lowerPose.jointRots.size(); j++) {
             
@@ -46,8 +46,8 @@ public:
 
             if (isUpperBody(joint)) {
 
-               Pose newUpper = Pose::Lerp(upperPose, lowerPose, alpha);
-               // Pose newUpper = glm::slerp(upperPose.jointRots[j], lowerPose.jointRots[j], alpha);
+               // Pose newUpper = Pose::Lerp(upperPose, lowerPose, alpha);
+               Pose newUpper = Pose(glm::slerp(upperPose.jointRots[j], lowerPose.jointRots[j], alpha));
                result.appendKey(newUpper);
             }
             else {

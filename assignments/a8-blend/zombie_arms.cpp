@@ -35,8 +35,28 @@ public:
       Motion result;
       result.setFramerate(motion.getFramerate());
       // todo: your code here
-      result.appendKey(motion.getKey(0));
 
+      // Transform R_offset_leftArm = leftArm->getLocal2Parent().inverse() * Transform(leftLocalRot, vec3(0), vec3(0));
+      // Transform R_offset_rightArm = rightArm->getLocal2Parent().inverse() * Transform(rightLocalRot, vec3(0), vec3(0));
+      // Transform R_offset_leftElbow = leftElbow->getLocal2Parent().inverse() * Transform(elbowLocalRot, vec3(0), vec3(0));
+      // Transform R_offset_rightElbow = rightElbow->getLocal2Parent().inverse() * Transform(elbowLocalRot, vec3(0), vec3(0));
+
+      // quat leftOffset = leftLocalRot * inverse(leftArm->getLocalRotation());
+      // quat rightOffset = rightLocalRot * inverse(rightArm->getLocalRotation());
+      // quat leftElbowOffset = elbowLocalRot * inverse(leftElbow->getLocalRotation());
+      // quat rightElbowOffset = elbowLocalRot * inverse(rightElbow->getLocalRotation());
+
+      // quat rot = leftArm->getLocal2Parent();
+
+      for (int i = 0; i < motion.getNumKeys(); i++) {
+         Pose newPose = motion.getKey(i);
+         newPose.jointRots[leftArm->getID()] *= leftLocalRot * inverse(leftArm->getLocalRotation());
+         newPose.jointRots[rightArm->getID()] *= rightLocalRot * inverse(rightArm->getLocalRotation());
+         newPose.jointRots[leftElbow->getID()] *= elbowLocalRot * inverse(leftElbow->getLocalRotation());
+         newPose.jointRots[rightElbow->getID()] *= elbowLocalRot * inverse(rightElbow->getLocalRotation());
+         result.appendKey(newPose);
+      }
+     
       return result;
    }
 
@@ -53,9 +73,15 @@ public:
 
       Motion result;
       result.setFramerate(motion.getFramerate());
-      // todo: your code here
-      result.appendKey(motion.getKey(0));
 
+      for (int i = 0; i < motion.getNumKeys(); i++) {
+         Pose newPose = motion.getKey(i);
+         newPose.jointRots[leftArm->getID()] = leftRot;
+         newPose.jointRots[rightArm->getID()] = rightRot;
+         newPose.jointRots[leftElbow->getID()] = elbowRot;
+         newPose.jointRots[rightElbow->getID()] = elbowRot;
+         result.appendKey(newPose);
+      }
       return result;
    }
 
