@@ -29,8 +29,49 @@ public:
       Motion result;
       result.setFramerate(lower.getFramerate());
       // todo: your code here
-      result.appendKey(lower.getKey(0));
+
+      // Joint* spine = _skeleton.getByName("Beta:Spine1");
+      // int spineId = spine->getID();
+      // going through keys - each key has a list of rotations for each joint 
+      // if that joint corresponds to the upper body - copy the upper body motion 
+
+      
+      for (int i = 0; i < lower.getNumKeys(); i++) {
+         Pose lowerPose = lower.getKey(i);
+         Pose upperPose = upper.getKey(i);
+         
+         for (int j = 0; j < lowerPose.jointRots.size(); j++) {
+            
+            Joint* joint = _skeleton.getByID(j);
+
+            if (isUpperBody(joint)) {
+
+               Pose newUpper = Pose::Lerp(upperPose, lowerPose, alpha);
+               // Pose newUpper = glm::slerp(upperPose.jointRots[j], lowerPose.jointRots[j], alpha);
+               result.appendKey(newUpper);
+            }
+            else {
+               result.appendKey(lowerPose);
+            }
+         }
+      }
+
+   //   result.appendKey(lower.getKey(0));
       return result;
+   }
+
+   bool isUpperBody(Joint* joint) {
+      // check if joint is the hips
+      if (joint->getID() == 0) {
+         return false;
+      }
+      // else if (joint->getName() == "Beta:Spine1") {
+      else if (joint->getID() == 2) {
+         return true;
+      }
+      else {
+         return isUpperBody(joint->getParent());
+      }
    }
 
    void scene()
