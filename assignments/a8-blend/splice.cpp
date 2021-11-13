@@ -26,20 +26,19 @@ public:
 
    Motion spliceUpperBody(const Motion& lower, const Motion& upper, float alpha)
    {
-      Motion result;
+      Motion result = lower;
       result.setFramerate(lower.getFramerate());
       // todo: your code here
 
-      // Joint* spine = _skeleton.getByName("Beta:Spine1");
-      // int spineId = spine->getID();
-      // going through keys - each key has a list of rotations for each joint 
-      // if that joint corresponds to the upper body - copy the upper body motion 
+      Joint* spine = _skeleton.getByName("Beta:Spine1");
+      int spineID = spine->getID();
 
       
       for (int i = 0; i < lower.getNumKeys(); i++) {
          Pose lowerPose = lower.getKey(i);
          Pose upperPose = upper.getKey(i+120);
-         
+         Pose lowerCopy = lowerPose;
+
          for (int j = 0; j < lowerPose.jointRots.size(); j++) {
             
             Joint* joint = _skeleton.getByID(j);
@@ -47,12 +46,15 @@ public:
             if (isUpperBody(joint)) {
 
                // Pose newUpper = Pose::Lerp(upperPose, lowerPose, alpha);
-               Pose newUpper = Pose(glm::slerp(upperPose.jointRots[j], lowerPose.jointRots[j], alpha));
-               result.appendKey(newUpper);
+               // Pose newUpper = Pose(glm::slerp(upperPose.jointRots[j], lowerPose.jointRots[j], alpha));
+
+               lowerCopy.jointRots[j] = glm::slerp(upperPose.jointRots[j], lowerPose.jointRots[j], alpha);
+
+               result.appendKey(lowerCopy);
             }
-            else {
-               result.appendKey(lowerPose);
-            }
+            // else {
+            //    result.appendKey(lowerPose.jointRots[j]);
+            // }
          }
       }
 
@@ -65,8 +67,7 @@ public:
       if (joint->getID() == 0) {
          return false;
       }
-      // else if (joint->getName() == "Beta:Spine1") {
-      else if (joint->getID() == 2) {
+      else if (joint->getName() == "Beta:Spine1") {
          return true;
       }
       else {
