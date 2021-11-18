@@ -34,10 +34,31 @@ public:
     assert(numBlendFrames <= motion1_.getNumKeys());
     assert(numBlendFrames <= motion2_.getNumKeys());
 
-    int start1 = motion1_.getNumKeys() - numBlendFrames;
+    int start1 = motion1_.getNumKeys() - numBlendFrames - 1;
     int start2 = 0;
 
     // TODO: Your code here
+  
+    blend_.setFramerate(motion1_.getFramerate());
+    // float alpha = 0.01f;
+
+    for (int i = 0; i < motion1_.getNumKeys(); i++){
+      blend_.appendKey(motion1_.getKey(i));
+    }
+
+    for (float a = 0.0f; a <= 1.0f; a+=0.15) {
+      Pose blended = Pose::Lerp(motion1_.getKey(start1), motion2_.getKey(start2), a);
+      blend_.appendKey(blended);
+    }
+
+    for (int i = 0; i < motion2_.getNumKeys(); i++){
+      blend_.appendKey(motion2_.getKey(i));
+    }
+
+    
+
+    
+
   }
 
   void save(const std::string &filename)
