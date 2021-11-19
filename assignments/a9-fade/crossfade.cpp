@@ -46,18 +46,20 @@ public:
       blend_.appendKey(motion1_.getKey(i));
     }
 
-    for (float a = 0.0f; a <= 1.0f; a+=0.15) {
-      Pose blended = Pose::Lerp(motion1_.getKey(start1), motion2_.getKey(start2), a);
-      blend_.appendKey(blended);
-    }
+    // for (float a = 0.0f; a <= 1.0f; a+=0.15) {
+    //   Pose blended = Pose::Lerp(motion1_.getKey(start1), motion2_.getKey(start2), a);
+    //   blend_.appendKey(blended);
+    // }
 
     for (int i = 0; i < motion2_.getNumKeys(); i++){
-      blend_.appendKey(motion2_.getKey(i));
+      Pose pose = motion2_.getKey(i);
+      vec3 rootWalk = motion1_.getKey(motion1_.getNumKeys()-1).rootPos;
+      pose.rootPos = rootWalk; 
+      // blend_.appendKey(motion2_.getKey(i));
+      blend_.appendKey(pose);
     }
 
-    
 
-    
 
   }
 
