@@ -1,7 +1,6 @@
 # Readme
 
-TODO: Replace this text with
+### Crossfade 
 
-* images, gifs, videos
-* brief description of what each image/gif/video shows
+![](http://g.recordit.co/QU0TKNGD3w.gif)
 
