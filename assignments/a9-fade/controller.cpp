@@ -44,6 +44,12 @@ public:
     _walk.update(_skeleton, elapsedTime());
 
     // TODO: Your code here
+    for (int i = 0; i < _walk.getNumKeys(); i++) {
+      Pose pose = _walk.getKey(i); 
+      Joint* hip = _skeleton.getByName("Beta:Hips");
+      pose.rootPos = vec3(0, 100, 0);
+      _walk.editKey(i, pose);
+    }
 
     // TODO: Override the default camera to follow the character
     // lookAt(pos, look, vec3(0, 1, 0));
