@@ -48,6 +48,7 @@ public:
       Pose pose = _walk.getKey(i); 
       Joint* hip = _skeleton.getByName("Beta:Hips");
       pose.rootPos = vec3(0, 100, 0);
+      pose.jointRots[hip->getID()] = eulerAngleRO(XYZ, vec3(0, _heading, 0));
       _walk.editKey(i, pose);
     }
 
