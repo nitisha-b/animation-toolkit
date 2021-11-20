@@ -40,23 +40,51 @@ public:
     // TODO: Your code here
   
     blend_.setFramerate(motion1_.getFramerate());
-    // float alpha = 0.01f;
+    // float alpha = (float)1/numBlendFrames;
 
     for (int i = 0; i < motion1_.getNumKeys(); i++){
       blend_.appendKey(motion1_.getKey(i));
     }
 
-    // for (float a = 0.0f; a <= 1.0f; a+=0.15) {
-    //   Pose blended = Pose::Lerp(motion1_.getKey(start1), motion2_.getKey(start2), a);
-    //   blend_.appendKey(blended);
-    // }
+    for (float a = 0.0f; a <= 1.0f; a+=0.15) {
+      Pose blended = Pose::Lerp(motion1_.getKey(start1), motion2_.getKey(start2), a);
+      blend_.appendKey(blended);
+    }
+
+    Joint* hip = skeleton_.getByName("Beta:Hips");
+    Pose pose1 = motion1_.getKey(motion1_.getNumKeys()-1);
+    Pose pose2 = motion2_.getKey(0);
+    vec3 root1 = pose1.rootPos;
+    quat rotation1 = pose1.jointRots[hip->getID()];
+    Transform t1 = Transform(root1, rotation1);
+
+    vec3 root2 = pose2.rootPos;
+    quat rotation2 = pose2.jointRots[hip->getID()];
+    Transform t2 = Transform(root2, rotation2);
+
 
     for (int i = 0; i < motion2_.getNumKeys(); i++){
+      // Pose pose1 = motion1_.getKey(motion1_.getNumKeys()-1);
       Pose pose = motion2_.getKey(i);
-      vec3 rootWalk = motion1_.getKey(motion1_.getNumKeys()-1).rootPos;
-      pose.rootPos = rootWalk; 
+      // vec3 rootMotion1 = motion1_.getKey(motion1_.getNumKeys()-1).rootPos;
+      // pose.rootPos = rootMotion1;
+      // pose.jointRots[hip->getID()] = eulerAngleRO(XYZ, vec3(hipQuat.x, hipQuat.y, hipQuat.z));
+
+      
+      pose.rootPos = pose.rootPos * eulerAngleRO(XYZ, vec3(hipQuat.x, hipQuat.y, hipQuat.z));
+      // pose.rootPos = eulerAngleRO(XYZ, pose1.jointRots[hip->getID()]) * rootMotion1;  
+      motion2_.editKey(i, pose);
+
       // blend_.appendKey(motion2_.getKey(i));
-      blend_.appendKey(pose);
+
+      // Pose last = motion1_.getKey(motion1_.getNumKeys()-1);
+      // Pose first = motion2_.getKey(0);
+      // vec3 offset = last.rootPos - first.rootPos; 
+      // Transform transform = Transform();
+      // transform.setT(offset);
+      // pose.rootPos *= offset; 
+
+      blend_.appendKey(motion2_.getKey(i));
     }
 
 
@@ -92,8 +120,8 @@ std::string PruneName(const std::string &name)
 
 int main(int argc, char **argv)
 {
-  std::string motion1 = "../motions/Beta/walking.bvh";
-  std::string motion2 = "../motions/Beta/jump.bvh";
+  std::string motion1 = "../motions/Beta/left_turn_90.bvh";
+  std::string motion2 = "../motions/Beta/walking.bvh";
   int numFrames = 10;
 
   try
