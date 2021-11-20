@@ -106,8 +106,8 @@ std::string PruneName(const std::string &name)
 
 int main(int argc, char **argv)
 {
-  std::string motion1 = "../motions/Beta/walking.bvh";
-  std::string motion2 = "../motions/Beta/jump.bvh";
+  std::string motion1 = "../motions/Beta/right_turn_90.bvh";
+  std::string motion2 = "../motions/Beta/walking.bvh";
   int numFrames = 10;
 
   try

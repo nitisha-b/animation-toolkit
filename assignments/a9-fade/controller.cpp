@@ -50,10 +50,19 @@ public:
       pose.rootPos = vec3(0, 100, 0);
       pose.jointRots[hip->getID()] = eulerAngleRO(XYZ, vec3(0, _heading, 0));
       _walk.editKey(i, pose);
+
+      Joint* head = _skeleton.getByName("Beta:Head");
+      vec3 headT = head->getLocal2Global().transformVector(vec3(0,0,-400));
+      vec3 headPos = head->getGlobalTranslation();
+      globalPos = headPos+headT;
+      // globalPos = head->getGlobalTranslation();
+      globalLookPos = headPos;
+      // globalLookPos = headPos - vec3(0,0,-400);
+      lookAt(globalPos, globalLookPos, vec3(0,1,0));
     }
 
     // TODO: Override the default camera to follow the character
-    // lookAt(pos, look, vec3(0, 1, 0));
+    
 
     // update heading when key is down
     if (keyIsDown('D')) _heading -= 0.05;
@@ -66,6 +75,8 @@ protected:
   Motion _walk;
   Skeleton _skeleton;
   atkui::SkeletonDrawer _drawer;
+  vec3 globalPos;
+  vec3 globalLookPos;
 };
 
 int main(int argc, char **argv)
