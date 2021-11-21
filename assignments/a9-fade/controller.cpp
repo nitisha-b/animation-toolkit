@@ -51,11 +51,11 @@ public:
     for (int i = 0; i < _walk.getNumKeys(); i++) {
       Pose pose = _walk.getKey(i); 
       
-      pose.rootPos = vec3(0, 100, 0);
+      // pose.rootPos = vec3(0, 100, 0);
       
       // vec3 headT = head->getLocal2Global().transformVector(vec3(0,0,-400));
 
-      // pose.rootPos = headPos + velocity * dt();
+      pose.rootPos = headPos + velocity * dt();
       // pose.jointRots[hip->getID()] = eulerAngleRO(XYZ, vec3(0, _heading, 0));
       _walk.editKey(i, pose);
     
@@ -84,7 +84,7 @@ public:
     }
     if (keyIsDown('A')) {
       _heading += 0.05;
-      
+
       for (int i = 0; i < _walk.getNumKeys(); i++) {
         Pose pose = _walk.getKey(i);
         pose.jointRots[hip->getID()] = angleAxis(_heading, vec3(0,1,0));
