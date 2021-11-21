@@ -42,16 +42,18 @@ public:
   virtual void update()
   {
     _walk.update(_skeleton, elapsedTime());
-    vec3 velocity = vec3(0,0,_heading) * 50.0f;
+    vec3 velocity = vec3(_heading,0,0) * -20.0f;
     Joint* hip = _skeleton.getByName("Beta:Hips");
     Joint* head = _skeleton.getByName("Beta:Head");
 
+    vec3 currentPos = _skeleton.getRoot()->getGlobalTranslation();
     // TODO: Your code here
+
     for (int i = 0; i < _walk.getNumKeys(); i++) {
       Pose pose = _walk.getKey(i); 
-      pose.rootPos = pose.rootPos + velocity * dt();
-      pose.jointRots[hip->getID()] = eulerAngleRO(XYZ, vec3(0, _heading, 0));
-      
+      pose.rootPos = currentPos + velocity * dt();
+      // _skeleton.getRoot()->setLocalTranslation(currentPos + velocity * dt());
+      // pose.jointRots[hip->getID()] = eulerAngleRO(XYZ, vec3(0, _heading, 0));
       _walk.editKey(i, pose);
 
     // TODO: Override the default camera to follow the character
