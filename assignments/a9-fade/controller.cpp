@@ -45,29 +45,22 @@ public:
     vec3 velocity = vec3(0,0,_heading) * 50.0f;
     Joint* hip = _skeleton.getByName("Beta:Hips");
     Joint* head = _skeleton.getByName("Beta:Head");
-    vec3 headPos = head->getGlobalTranslation();
 
     // TODO: Your code here
     for (int i = 0; i < _walk.getNumKeys(); i++) {
       Pose pose = _walk.getKey(i); 
+      pose.rootPos = pose.rootPos + velocity * dt();
+      pose.jointRots[hip->getID()] = eulerAngleRO(XYZ, vec3(0, _heading, 0));
       
-      // pose.rootPos = vec3(0, 100, 0);
-      
-      // vec3 headT = head->getLocal2Global().transformVector(vec3(0,0,-400));
-
-      pose.rootPos = headPos + velocity * dt();
-      // pose.jointRots[hip->getID()] = eulerAngleRO(XYZ, vec3(0, _heading, 0));
       _walk.editKey(i, pose);
-    
-      
 
     // TODO: Override the default camera to follow the character
 
       vec3 headT = head->getLocal2Global().transformVector(vec3(0,0,-400));
-      vec3 headPos1 = head->getGlobalTranslation();
-      globalPos = headPos1+headT;
+      vec3 headPos = head->getGlobalTranslation();
+      globalPos = headPos+headT;
       // globalPos = head->getGlobalTranslation();
-      globalLookPos = headPos1;
+      globalLookPos = headPos;
       // globalLookPos = headPos - vec3(0,0,-400);
       lookAt(globalPos, globalLookPos, vec3(0,1,0));   
     }
