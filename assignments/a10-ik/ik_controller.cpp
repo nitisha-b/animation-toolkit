@@ -61,22 +61,29 @@ bool IKController::solveIKCCD(Skeleton& skeleton, int jointid,
         Joint* endEff = chain[0];
         Joint* currJoint = chain[i];
 
-        // vec3 r = endEff->getGlobalTranslation() - currJoint->getGlobalTranslation(); 
-        // vec3 e = goalPos - endEff->getGlobalTranslation(); 
+        vec3 r = endEff->getGlobalTranslation() - currJoint->getGlobalTranslation(); 
+        vec3 e = goalPos - endEff->getGlobalTranslation(); 
 
-        vec3 r = currJoint->getGlobalTranslation() - currJoint->getParent()->getGlobalTranslation();
-        vec3 e = goalPos - currJoint->getGlobalTranslation(); 
+        // vec3 r = currJoint->getGlobalTranslation() - currJoint->getParent()->getGlobalTranslation();
+        // vec3 e = goalPos - currJoint->getGlobalTranslation(); 
+
+        if (length(e) < 0.0001) {
+          continue;
+        }
+
+        if (length(glm::cross(r,e)) < 0.0001) {
+          continue;
+        }
 
         float phi = atan2(glm::length(glm::cross(r,e)), (glm::dot(r,e) + glm::dot(r,r))) * nudgeFactor;
         vec3 axis = glm::cross(r,e) / glm::length(glm::cross(r,e));
 
-        currJoint->setLocalRotation(currJoint->getLocalRotation() * angleAxis(phi,axis));
-        // currJoint->setLocalRotation(angleAxis(phi,axis));
-      
+        quat rot = angleAxis(phi, inverse(currJoint->getParent()->getGlobalRotation()) * axis);
+        currJoint->setLocalRotation(rot * currJoint->getLocalRotation());
+        
         currJoint->fk();
         // skeleton.fk();
       }
-      // skeleton.fk();
       p = skeleton.getByID(jointid)->getGlobalTranslation();
       count++;
 
