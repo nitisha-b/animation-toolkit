@@ -25,9 +25,50 @@ bool IKController::solveIKAnalytic(Skeleton& skeleton,
   }
 
   Joint* hip = knee->getParent();
+  
+  Joint* current = skeleton.getByID(jointid);
+  Joint* parent = current->getParent();
+  Joint* grandParent = parent->getParent();
 
-  // TODO: Your code here
+  vec3 rVec = goalPos - grandParent->getGlobalTranslation();
+  float r = length(rVec);
+  vec3 eVec = goalPos - current->getGlobalTranslation();
+  float e = length(eVec);
 
+  float l1 = length(parent->getGlobalTranslation() - grandParent->getGlobalTranslation());
+  float l2 = length(current->getGlobalTranslation() - parent->getGlobalTranslation());
+  float cosPhi = (pow(r,2) - pow(l1,2) - pow(l2,2)) / (-2 * l1 * l2);  
+  float theta2z = acos(cosPhi) - M_PI;
+  float theta1z = asin((-l2 * sin(theta2z))/r);
+  float gamma = asin(goalPos[1]/r);
+  float beta = atan2(goalPos[2], goalPos[0]);
+
+  // Use the angle/axis CCD computation to solve for the grandparent joint rotation.
+  float phi = atan2(length(cross(r,e)), (dot(r,e) + dot(r,r)));
+  vec3 gpAxis = cross(r,e) / length(cross(r,e));
+
+  if (length(cross(r,e)) < epsilon) {
+    gpAxis = vec3(0,0,1);
+  }
+  
+  quat gpRot = angleAxis(phi, gpAxis);
+  grandParent->setLocalRotation(inverse(grandParent->getParent()->getGlobalRotation()) * gpRot * grandParent->getLocalRotation());
+
+
+  // Use the law of cosines to solve for the parent joint rotation.
+  vec3 limbDir = normalize(parent->getLocalTranslation());
+  vec3 axis = cross(limbDir, vec3(0,0,-1));
+  if (limbDir[1] < 0) axis = cross(limbDir, vec3(0,0,1));
+  quat pRot = angleAxis(theta2z, axis);
+  parent->setLocalRotation(pRot);
+
+  // quat cRot = angleAxis(beta, vec3(0,1,0)) * angleAxis(gamma, vec3(0,0,1)) * angleAxis(theta1z, vec3(0,0,1));
+  // current->setLocalRotation(cRot * current->getLocalRotation());
+
+  // grandParent->fk();
+  // parent->fk();
+  // current->fk();
+  skeleton.fk();
 
   return true;
 }
@@ -38,21 +79,6 @@ bool IKController::solveIKCCD(Skeleton& skeleton, int jointid,
   // There are no joints in the IK chain for manipulation
   if (chain.size() == 0) return true;
 
-  // TODO: Your code here
-
-    // solveIKCCD positions the joint given by jointid so its global position
-    // is located at goalPos
-    //
-    // param skeleton: the character to modify
-    // param jointid: the ID of the joint to pose
-    // param goalPos: the target position for jointid (global pos)
-    // param chain: the list of joints to "nudge" towards the goal
-    // param threshold: when the given joint is within threshold of the goal, stop iterating
-    // param maxIters: the max number of iterations to try to reach the goal
-    //
-    // return true/false based on whether we could reach the goal
-    // side effect: skeleton should by posed such that jointid is located at goalPos (or in this direction of
-    // goalPos if the target is out of reach)
     vec3 p = chain[0]->getGlobalTranslation();
     int count = 0; 
 
