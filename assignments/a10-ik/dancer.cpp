@@ -48,6 +48,9 @@ public:
       ik.solveIKCCD(_skeleton, lhID, _lhandTarget, chain1, 0.0001, 8, 0.1);
       ik.solveIKCCD(_skeleton, rhID, _rhandTarget, chain2, 0.0001, 8, 0.1);
 
+      vec3 hipPos = _skeleton.getRoot()->getGlobalTranslation();
+      vec3 hipMove = vec3(3.0 * cos(theta) + 5.0, 10.0 * sin(theta) + 10.0, 0);
+      _skeleton.getRoot()->setLocalTranslation(hipPos + hipMove);
       _skeleton.fk();
    }
 
