@@ -111,6 +111,11 @@ protected:
    float theta;
 };
 
+// clang: error: linker command failed with exit code 1 (use -v to see invocation)
+// "IKController::solveIKCCD(atk::Skeleton&, int, glm::vec<3, float, (glm::qualifier)0> const&, std::__1::vector<atk::Joint*, std::__1::allocator<atk::Joint*> > const&, float, int, float)", referenced from: ADancer::update() in unique.cpp.o
+
+// same code runs in a different file, just not in the unique file
+
 int main(int argc, char** argv)
 {
    Unique viewer;
