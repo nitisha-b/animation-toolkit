@@ -1,7 +1,9 @@
 # Readme
 
-TODO: Replace this text with
+## Looker 
+![](http://g.recordit.co/7wlzF7Wl5E.gif)
 
-* images, gifs, videos
-* brief description of what each image/gif/video shows
+## IK: CCD
+![](http://g.recordit.co/vktzTjAzMe.gif)
+
 
