@@ -30,8 +30,9 @@ bool IKController::solveIKAnalytic(Skeleton& skeleton,
   Joint* parent = current->getParent();
   Joint* grandParent = parent->getParent();
 
-  vec3 rVec = goalPos - grandParent->getGlobalTranslation();
-  float r = length(rVec);
+  // vec3 rVec = goalPos - grandParent->getGlobalTranslation();
+  // float r = length(rVec);
+  float r = length(goalPos - grandParent->getGlobalTranslation());
   vec3 eVec = goalPos - current->getGlobalTranslation();
   float e = length(eVec);
 
@@ -44,6 +45,7 @@ bool IKController::solveIKAnalytic(Skeleton& skeleton,
   float beta = atan2(goalPos[2], goalPos[0]);
 
   // Use the angle/axis CCD computation to solve for the grandparent joint rotation.
+  vec3 rVec = current->getGlobalTranslation() - grandParent->getGlobalTranslation();
   vec3 rXe = cross(rVec, eVec);
   float phi = atan2(length(rXe), (dot(rVec,eVec) + dot(rVec,rVec)));
   vec3 gpAxis = rXe / length(rXe);
@@ -54,7 +56,8 @@ bool IKController::solveIKAnalytic(Skeleton& skeleton,
   
   quat gpRot = angleAxis(phi, inverse(grandParent->getParent()->getGlobalRotation()) * gpAxis);
   grandParent->setLocalRotation(gpRot * grandParent->getLocalRotation());
-
+  // grandParent->fk();
+  skeleton.fk();
 
   // Use the law of cosines to solve for the parent joint rotation.
   vec3 limbDir = normalize(parent->getLocalTranslation());
@@ -65,8 +68,8 @@ bool IKController::solveIKAnalytic(Skeleton& skeleton,
 
   // grandParent->fk();
   // parent->fk();
-  current->fk();
-  // skeleton.fk();
+  // current->fk();
+  skeleton.fk();
 
   return true;
 }
