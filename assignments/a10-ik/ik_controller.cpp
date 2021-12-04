@@ -44,15 +44,16 @@ bool IKController::solveIKAnalytic(Skeleton& skeleton,
   float beta = atan2(goalPos[2], goalPos[0]);
 
   // Use the angle/axis CCD computation to solve for the grandparent joint rotation.
-  float phi = atan2(length(cross(r,e)), (dot(r,e) + dot(r,r)));
-  vec3 gpAxis = cross(r,e) / length(cross(r,e));
+  vec3 rXe = cross(rVec, eVec);
+  float phi = atan2(length(rXe), (dot(rVec,eVec) + dot(rVec,rVec)));
+  vec3 gpAxis = rXe / length(rXe);
 
-  if (length(cross(r,e)) < epsilon) {
+  if (length(rXe) < epsilon) {
     gpAxis = vec3(0,0,1);
   }
   
-  quat gpRot = angleAxis(phi, gpAxis);
-  grandParent->setLocalRotation(inverse(grandParent->getParent()->getGlobalRotation()) * gpRot * grandParent->getLocalRotation());
+  quat gpRot = angleAxis(phi, inverse(grandParent->getParent()->getGlobalRotation()) * gpAxis);
+  grandParent->setLocalRotation(gpRot * grandParent->getLocalRotation());
 
 
   // Use the law of cosines to solve for the parent joint rotation.
@@ -62,13 +63,10 @@ bool IKController::solveIKAnalytic(Skeleton& skeleton,
   quat pRot = angleAxis(theta2z, axis);
   parent->setLocalRotation(pRot);
 
-  // quat cRot = angleAxis(beta, vec3(0,1,0)) * angleAxis(gamma, vec3(0,0,1)) * angleAxis(theta1z, vec3(0,0,1));
-  // current->setLocalRotation(cRot * current->getLocalRotation());
-
   // grandParent->fk();
   // parent->fk();
-  // current->fk();
-  skeleton.fk();
+  current->fk();
+  // skeleton.fk();
 
   return true;
 }
