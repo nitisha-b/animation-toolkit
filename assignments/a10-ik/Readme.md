@@ -12,6 +12,5 @@
 ## Dancer
 ![](http://g.recordit.co/Ucs1KLJHYd.gif)
 
-## Unique
-Lifting weights <br>
+## Unique: Lifting weights 
 ![](https://recordit.co/QTaJSuWAm2)
