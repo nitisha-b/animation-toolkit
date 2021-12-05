@@ -13,4 +13,4 @@
 ![](http://g.recordit.co/Ucs1KLJHYd.gif)
 
 ## Unique: Lifting weights 
-![](https://recordit.co/QTaJSuWAm2)
+![](http://g.recordit.co/QTaJSuWAm2.gif)
