@@ -4,9 +4,9 @@
 using namespace glm;
 using namespace atk;
 
-float ASteerable::kVelKv = 150.0; 
-float ASteerable::kOriKv = 150.0;  
-float ASteerable::kOriKp = 150.0;
+float ASteerable::kVelKv = 2.0; 
+float ASteerable::kOriKv = 16.0;  
+float ASteerable::kOriKp = 64.0;
 
 // Given a desired velocity, veld, and dt, compute a transform holding 
 // the new orientation and change in position
@@ -22,6 +22,7 @@ void ASteerable::senseControlAct(const vec3& veld, float dt)
    // compute _force and _torque
    _force = _mass * kVelKv * _vd;
    float a = _thetad - _state[1];
+   
    if (a > M_PI) a -= 2 * M_PI;
    else if (a < -M_PI) a += 2*M_PI;
    _torque = _inertia * (-kOriKv * _state[3]) + kOriKp * a;
